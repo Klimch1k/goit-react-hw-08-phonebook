@@ -18,6 +18,6 @@ export const UserMenu = () => {
 };
 
 // //
-// usertest1@mail.com
+// yura.klim@mail.com
 // //
-// usertest111
+// yuraklim
