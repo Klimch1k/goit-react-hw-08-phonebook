@@ -1,24 +1,41 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contacts/operations';
 import css from './ContactsForm.module.css';
+import {selectAllcontacts} from '../../redux/contacts/selectors'
 
 export const ContactsForm = () => {
   const dispatch = useDispatch();
+  const contacts = useSelector(selectAllcontacts);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    const contact = {
-      name: e.currentTarget.name.value,
-      number: e.currentTarget.number.value,
-    };
+ const handleSubmit = e => {
+   e.preventDefault();
+   const contactName = e.currentTarget.name.value;
+   const contactNumber = e.currentTarget.number.value;
 
-    if (contact !== '') {
-      dispatch(addContact(contact));
-      e.currentTarget.reset();
+    const isDuplicate = contacts.some(
+      contact => contact.name.toLowerCase() === contactName.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      alert('This contact already exists!');
       return;
-    }
-    alert('Task cannot be empty. Enter some text!');
-  };
+   }
+   
+   const contact = {
+     name: contactName,
+     number: contactNumber,
+   };
+
+   if (contact !== '') {
+     dispatch(addContact(contact));
+     e.currentTarget.reset();
+     return;
+   }
+   alert('Task cannot be empty. Enter some text!');
+
+  
+ };
+
 
   return (
     <form className={css.form} onSubmit={handleSubmit}>
